@@ -37,7 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-   // final products = Provider.of<ProductsModel>(context, listen: false);
+     final products = Provider.of<ProductsModel>(context, listen: false);
 
     Size size = MediaQuery.of(context).size;
     return GestureDetector(
@@ -147,8 +147,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                       context,
                                       PageTransition(
                                           type: PageTransitionType.fade,
-                                          child: const FeedsScreen(
-                                            productList: [],
+                                          child: ChangeNotifierProvider.value(
+                                            value: products,
+                                            child: const FeedsScreen(
+                                              productList: [],
+                                            ),
                                           )));
                                 },
                                 icon: IconlyBold.arrowRight2),
@@ -170,8 +173,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               );
                             } else if (snapshot.data == null) {
                               Center(
-                                child:
-                                    Text('An eroor occured ${snapshot.error}'),
+                                child: Text(
+                                    'No product available ${snapshot.error}'),
                               );
                             }
                             return FeedsGridWidget(productList: snapshot.data!);

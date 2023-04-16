@@ -70,7 +70,7 @@ class FeedsWidget extends StatelessWidget {
                     color: Colors.red,
                     size: 28,
                   ),
-                  imageUrl: productProvider.image![3],
+                  imageUrl: productProvider.image!,
                   boxFit: BoxFit.fill,
                 ),
               ),
