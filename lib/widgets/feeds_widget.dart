@@ -12,7 +12,8 @@ class FeedsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final productProvider = Provider.of<ProductsModel>(context, listen: false);
+    final ProductsModel productProvider =
+        Provider.of<ProductsModel>(context, listen: false);
 
     Size size = MediaQuery.of(context).size;
     return Padding(
@@ -69,7 +70,7 @@ class FeedsWidget extends StatelessWidget {
                     color: Colors.red,
                     size: 28,
                   ),
-                  imageUrl: productProvider.image![0],
+                  imageUrl: productProvider.image![3],
                   boxFit: BoxFit.fill,
                 ),
               ),
@@ -77,7 +78,7 @@ class FeedsWidget extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  productProvider.price.toString(),
+                  productProvider.title.toString(),
                   overflow: TextOverflow.ellipsis,
                   maxLines: 2,
                   style: const TextStyle(

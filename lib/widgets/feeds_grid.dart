@@ -17,7 +17,7 @@ class FeedsGridWidget extends StatelessWidget {
         : GridView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            itemCount: 3,
+            itemCount: productList.length,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                 crossAxisSpacing: 0.0,
@@ -28,6 +28,7 @@ class FeedsGridWidget extends StatelessWidget {
                 value: productList[index],
                 child: const FeedsWidget(),
               );
-            });
+            },
+          );
   }
 }

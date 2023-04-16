@@ -8,7 +8,6 @@ import 'package:store_api_flutter_course/models/products_model.dart';
 import 'package:store_api_flutter_course/screens/categories_screen.dart';
 import 'package:store_api_flutter_course/screens/feeds_screen.dart';
 import 'package:store_api_flutter_course/screens/users_screen.dart';
-
 import '../services/api_handler.dart';
 import '../widgets/appbar_icons.dart';
 import '../widgets/feeds_grid.dart';
@@ -38,7 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final products = Provider.of<ProductsModel>(context, listen: false);
+   // final products = Provider.of<ProductsModel>(context, listen: false);
 
     Size size = MediaQuery.of(context).size;
     return GestureDetector(
@@ -148,9 +147,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                       context,
                                       PageTransition(
                                           type: PageTransitionType.fade,
-                                          child: ChangeNotifierProvider.value(
-                                              value: products,
-                                              child: const FeedsScreen(productList: [],))));
+                                          child: const FeedsScreen(
+                                            productList: [],
+                                          )));
                                 },
                                 icon: IconlyBold.arrowRight2),
                           ],
@@ -167,7 +166,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             } else if (snapshot.hasError) {
                               Center(
                                 child:
-                                    Text('An eroor occured ${snapshot.error}'),
+                                    Text('An error occured ${snapshot.error}'),
                               );
                             } else if (snapshot.data == null) {
                               Center(
