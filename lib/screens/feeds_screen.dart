@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-
+import 'package:provider/provider.dart';
+import '../models/products_model.dart';
 import '../widgets/feeds_widget.dart';
 
 class FeedsScreen extends StatelessWidget {
-  const FeedsScreen({Key? key}) : super(key: key);
+  final List<ProductsModel> productList;
+  const FeedsScreen({Key? key, required this.productList}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +24,10 @@ class FeedsScreen extends StatelessWidget {
               mainAxisSpacing: 0.0,
               childAspectRatio: 0.7),
           itemBuilder: (ctx, index) {
-            return const FeedsWidget();
+            return ChangeNotifierProvider.value(
+              value: productList[index],
+              child: const FeedsWidget(),
+            );
           }),
     );
   }

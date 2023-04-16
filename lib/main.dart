@@ -1,21 +1,26 @@
 import 'package:flutter/material.dart';
-
+import 'package:provider/provider.dart';
+import 'package:store_api_flutter_course/models/products_model.dart';
 import 'consts/global_colors.dart';
 import 'screens/home_screen.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => ProductsModel(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter 3.0.4 ',
+      title: 'Mini Store ',
       theme: ThemeData(
         scaffoldBackgroundColor: lightScaffoldColor,
         primaryColor: lightCardColor,
@@ -44,10 +49,14 @@ class MyApp extends StatelessWidget {
         //       displayColor: Colors.black,
         //     ),
         cardColor: lightCardColor,
-        brightness: Brightness.light, colorScheme: ThemeData().colorScheme.copyWith(
+        brightness: Brightness.light,
+        colorScheme: ThemeData()
+            .colorScheme
+            .copyWith(
               secondary: lightIconsColor,
               brightness: Brightness.light,
-            ).copyWith(background: lightBackgroundColor),
+            )
+            .copyWith(background: lightBackgroundColor),
       ),
       home: const HomeScreen(),
     );

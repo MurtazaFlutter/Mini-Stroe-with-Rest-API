@@ -2,13 +2,16 @@ import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:provider/provider.dart';
 import 'package:store_api_flutter_course/consts/global_colors.dart';
+import 'package:store_api_flutter_course/models/products_model.dart';
 import 'package:store_api_flutter_course/screens/categories_screen.dart';
 import 'package:store_api_flutter_course/screens/feeds_screen.dart';
 import 'package:store_api_flutter_course/screens/users_screen.dart';
 
+import '../services/api_handler.dart';
 import '../widgets/appbar_icons.dart';
-import '../widgets/feeds_widget.dart';
+import '../widgets/feeds_grid.dart';
 import '../widgets/sale_widget.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -23,6 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     _textEditingController = TextEditingController();
+    APIHandler.getAllProducts();
     super.initState();
   }
 
@@ -34,6 +38,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final products = Provider.of<ProductsModel>(context, listen: false);
+
     Size size = MediaQuery.of(context).size;
     return GestureDetector(
       onTap: () {
@@ -101,7 +107,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         IconlyLight.search,
                         color: lightIconsColor,
                       )),
-                ), const SizedBox(
+                ),
+                const SizedBox(
                   height: 18,
                 ),
                 Expanded(
@@ -141,24 +148,34 @@ class _HomeScreenState extends State<HomeScreen> {
                                       context,
                                       PageTransition(
                                           type: PageTransitionType.fade,
-                                          child: const FeedsScreen()));
+                                          child: ChangeNotifierProvider.value(
+                                              value: products,
+                                              child: const FeedsScreen(productList: [],))));
                                 },
                                 icon: IconlyBold.arrowRight2),
                           ],
                         ),
                       ),
-                      GridView.builder(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: 3,
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2,
-                                  crossAxisSpacing: 0.0,
-                                  mainAxisSpacing: 0.0,
-                                  childAspectRatio: 0.7),
-                          itemBuilder: (ctx, index) {
-                            return const FeedsWidget();
+                      FutureBuilder<List<ProductsModel>>(
+                          future: APIHandler.getAllProducts(),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            } else if (snapshot.hasError) {
+                              Center(
+                                child:
+                                    Text('An eroor occured ${snapshot.error}'),
+                              );
+                            } else if (snapshot.data == null) {
+                              Center(
+                                child:
+                                    Text('An eroor occured ${snapshot.error}'),
+                              );
+                            }
+                            return FeedsGridWidget(productList: snapshot.data!);
                           })
                     ]),
                   ),
